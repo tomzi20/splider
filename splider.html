@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        
+        #left {
+            width: 520px;
+            float: left;
+            margin-right: 30px;
+        }
+
+        #fieldOfChangeMainCurrency {
+            display: none;
+        }
+
+        td, th {
+            margin: 0px;
+            border: solid black 3px;
+            width: 200px;
+            text-align: center;
+            padding: 2px;
+            background: orange;
+        }
+
+        #table {
+            visibility: hidden;
+            margin: 10px;
+            margin-right: 15px;
+            font-size: 12px;
+        }
+
+        #vis1 {
+            border-top: 0;
+            border-left: 0;
+            background-color: blue;
+        }
+            
+        #table {
+            border-spacing: 0px;
+            border-collapse: collapse;
+        }
+
+        img {
+            width: 20px;
+            height: 20px;
+            float: right;
+        }
+        
+        img:hover {
+            cursor: pointer;
+        }
+
+        #numberAlert {
+            display: none;
+            color: red;
+        }
+
+        fieldset, legend {
+            background: orange;
+            border: solid black 3px;
+            margin-top: 6px;
+            margin-left: 15px;
+            padding: 3px 10px 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            background: blue;
+            margin: 0;
+            padding: 0;
+        }
+
+        input {
+            margin: 3px 5px 3px 0px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            border: 2px solid black;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        input[type=button], input[type=file] {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 3px;
+            cursor: pointer;
+            background: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        input[type=file] {
+            width: 250px;
+        }
+
+        input[type=button]:hover, input[type=file]:hover {
+            background-color: blue;
+        }
+
+        #title {
+            background: orange;
+            margin: 0px;
+            width: 100%;
+            padding: 1px;
+            padding-left: 40px;
+            font-family: Courier New;
+            font-size: 60px;
+            color: blue;
+            font-weight: 900;
+        }
+
+        #saveLoad {
+            width: 270px;
+        }
+       
+    </style>
+
+    <title>Program to splid expenses among people</title>
+
+  </head>
+
+  <body>
+    <div id="title">S P L I D E R</div>
+
+    <div id="left">
+        <!-- form to add new participant -->
+        <form>
+        <fieldset>
+            <legend>Add new participant</legend>
+
+            <label>Write name of new participant: <br>
+            <input type="text" name="participant" id="participant" maxlength="30" size="30"><br>
+            </label>
+
+            <input type="button" id="addParticipant" name="addParticipant" value="Add participant">
+        </fieldset>
+        </form>
+        
+        <!-- form to set main currency -->
+        <form>
+        <fieldset id="fieldOfMainCurrency">
+            <legend>Choose your main currency</legend>
+
+            <label>Enter designation or symbol for your main currency: <br>
+            <input type="text" name="mainCurrency" id="mainCurrency" maxlength="20" size="20" value="EUR"><br>
+            </label>
+
+            <input type="button" id="setMainCurrency" name="setMainCurrency" value="Set main currency">
+        </fieldset>
+        </form>
+
+        <!-- form to change main currency -->
+        <form>
+        <fieldset id="fieldOfChangeMainCurrency">
+            <legend>Choose your new main currency</legend>
+
+            <label>Enter designation or symbol for your new main currency: <br>
+            <input type="text" name="newMainCurrency" id="newMainCurrency" maxlength="20" size="20" value="EUR"><br>
+            </label>
+
+            <label>Write exchange rate for new main currency to the old main currency:<br>
+            <input type="text" name="exchangeRateNewCurrency" id="exchangeRateNewCurrency" maxlength="20" size="20" value="1"><br>
+            </label>
+
+            <input type="button" id="setNewMainCurrency" name="setNewMainCurrency" value="Set new main currency">
+        </fieldset>
+        </form>
+
+        <!-- form to add new expense -->
+        <form>
+        <fieldset>
+            <legend>Add expense</legend>
+
+            <label>Write name of expense:<br>
+            <input type="text" name="nameOfExpense" id="nameOfExpense" maxlength="40" size="40" value=""><br>
+            </label>
+
+            <label>Write cost of expense:<br>
+            <input type="text" name="costOfExpense" id="costOfExpense" maxlength="20" size="20" value=""><br>
+            </label>
+
+            <label>Write currency of the expense:<br>
+            <input type="text" name="nameOfCurrency" id="nameOfCurrency"  maxlength="20" size="20"><br>
+            </label>
+
+            <label>Write exchange rate to the main currency:<br>
+            <input type="text" name="exchangeRate" id="exchangeRate" maxlength="20" size="20" value="1"><br>
+            </label>
+
+            <label>Choose who pay the expense:<br>
+            <select name="whoPay" id="whoPay"></select></label><br>
+
+            <label id="checkboxes">Choose who take part in expense:<br>
+            </label>
+        
+            <div id="numberAlert">Currency rate and Expense cost must be a number. Don't use commas.</div>
+            <input type="button" id="addExpense" name="addExpense" value="Add expense">
+            </input>
+
+        </fieldset>
+        </form>
+
+    </div>
+
+    <div id="right">
+
+        <!-- Table with results-->
+        <table id="table">
+            <tr id="row"><th id="vis1"></th></tr>
+            <tr id="resultRow"><th id="vis2">Summary:</th></tr>
+        </table>
+
+        <!-- Save and load options -->
+        <form>
+        <fieldset id="saveLoad">
+            <legend>Save / Load your splider!</legend>
+    
+            Save file with your splider: <br>
+                
+            <input type="button" id="saveButton" name="saveButton" value="Save your splider!"><br>
+
+            Load your splider from file: <br>
+            <input type="file" id="inputfile" name="inputfile" value="Load your splider!">
+        </fieldset>
+        </form>
+    
+    </div>
+    </div>
+
+    <script>
+
+        let nameOfCurrency = document.getElementById("nameOfCurrency");
+        let mainCurrency;
+        
+        /* Function to set main currency */
+        function setMain() {
+            mainCurrency = document.getElementById("mainCurrency").value;
+            document.getElementById('nameOfCurrency').value = mainCurrency;
+            fieldOfMainCurrency.style.display = "none";
+            fieldOfChangeMainCurrency.style.display = "block";
+            vis1.innerHTML = mainCurrency;
+        }
+        
+        /* function to add new user */
+        function addUser() {
+            if (participant.value == "") return;
+
+            /* add new option to choose while adding expense */
+            let select = document.getElementById("whoPay");
+            let newOption = document.createElement("option");
+            newOption.text = participant.value;
+            select.add(newOption);
+            
+            /* add new checkbox to choose while adding expense */
+            let newCheckbox = document.createElement('input');
+            newCheckbox.type = "checkbox";
+            newCheckbox.name = "users";
+            newCheckbox.value = participant.value;
+            let label = document.createElement('label');
+            label.appendChild(newCheckbox);
+            checkboxes.appendChild(label);
+            let str = participant.value + '<br>'
+            label.insertAdjacentHTML('beforeend', str);
+
+            /* add new column in table */
+            let thName = document.createElement('TH');
+            thName.innerHTML = participant.value;
+            
+            row.append(thName);
+            let tdResult = document.createElement('TD');
+            tdResult.innerHTML = "0.00";
+            resultRow.append(tdResult);
+            participant.value = "";
+            let ths = document.getElementsByTagName('TH')
+            
+            table.style.visibility = "visible";
+
+            
+            let trs = document.getElementsByTagName("TR");
+
+            /* add 0.00 id table cell */
+            for (let o = 2; o < trs.length; o++) {
+                let td0 = document.createElement("TD");
+                td0.innerHTML = "0.00";
+                trs[o].append(td0);
+            }
+        }
+
+        
+        /* add new expense */
+        function addNewExpense() {
+            /* check if cost and rate are numbers */
+            let numb = +costOfExpense.value;
+            let rat = +exchangeRate.value;
+            if (isNaN(numb) || isNaN(rat)) {
+                numberAlert.style.display = "block"; 
+                return;
+            };
+            
+            /* add new expense to table */
+            let allCheckboxes = checkboxes.getElementsByTagName("INPUT");
+            let checkedLength = 0;
+            for (let j = 0; j < allCheckboxes.length; j++) {
+                if (allCheckboxes[j].checked) checkedLength++;
+            }
+            
+            let newTr = document.createElement('TR');
+            let newTh = document.createElement('TH');
+            let str1 = nameOfExpense.value + ' <img src="bin.png">';
+            newTh.insertAdjacentHTML('beforeend', str1);
+            newTr.append(newTh);
+            table.append(newTr);
+            let optionsLength = whoPay.length;
+            for (let i = 0; i < optionsLength; i++) {
+                let newTd = document.createElement('TD');
+                newTr.append(newTd);
+            }
+            let rate = exchangeRate.value;
+            let tds = newTr.getElementsByTagName('TD');
+            tds[whoPay.selectedIndex].innerHTML = (+rate * +costOfExpense.value * (checkedLength - 1) / (checkedLength)).toFixed(2) + " (" + (+costOfExpense.value * (checkedLength - 1) / (checkedLength)).toFixed(2) + nameOfCurrency.value + ")";
+            
+            for (k = 0; k < tds.length; k++) {
+                if (allCheckboxes[k].checked) {
+                    if (!(k  == whoPay.selectedIndex)) {
+                    tds[k].innerHTML = ((-1) * +rate * +costOfExpense.value / (checkedLength)).toFixed(2) + " (" + ((-1) * +costOfExpense.value / (checkedLength)).toFixed(2) + nameOfCurrency.value + ")";
+                }
+                } else if (!allCheckboxes[k].checked) {
+                    tds[k].innerHTML = "0.00";
+                }
+            }
+            numberAlert.style.display = "none";
+            sumUp();
+        }
+        
+        /* function to sum up the numbers in column */
+        function sumUp() {
+            let allTR = document.getElementsByTagName('TR');
+            let allTDinResultRow = resultRow.getElementsByTagName('TD');
+            let arrSum = [];
+            
+            let a = checkboxes.getElementsByTagName("INPUT").length;
+            for (let z = 0; z < a; z++) {
+                arrSum[z] = 0;
+            }
+            if (allTR.length > 2) {
+
+            for (let n = 2; n < allTR.length; n++) {
+                let allTDinRow = allTR[n].getElementsByTagName('TD');
+                                
+                for (let y = 0; y < allTDinRow.length; y++) {
+                                      
+                    let resultInTD = ((allTDinRow[y].innerText).split(" ")[0]);
+                   let wynik = +resultInTD.match(/[+-]?\d+(\.\d+)?/g).join('');
+                    arrSum[y] += wynik;
+                }
+            
+            }
+            
+            for (let m = 0; m < allTDinResultRow.length; m++) {
+                allTDinResultRow[m].innerHTML = arrSum[m].toFixed(2);
+            }
+            } else { 
+            for (let m = 0; m < allTDinResultRow.length; m++) {
+                allTDinResultRow[m].innerHTML = arrSum[m].toFixed(2);
+            }
+
+            }
+        }
+
+        /* function to remove expense */
+        function removeLine(event) {
+            let target = event.target;
+            if (target.tagName != 'IMG') return;
+            let removeTR = target.closest('tr');
+            if (!removeTR) return;
+            removeTR.remove();
+            sumUp();
+        }
+        
+        /* function to change main currency */
+        function changeCurrency() {
+            let newMainCurrency = document.getElementById("newMainCurrency").value;
+            vis1.innerHTML = newMainCurrency;
+            let allTD = table.getElementsByTagName('TD');
+            let newRate = document.getElementById('exchangeRateNewCurrency').value;
+            let numberOfCheckboxes = checkboxes.getElementsByTagName("INPUT").length;
+            
+            for (let p = numberOfCheckboxes; p < allTD.length; p++) {
+                let arr1 = allTD[p].innerHTML.toString().split(' ');
+                allTD[p].innerHTML = (+arr1[0] * +newRate).toFixed(2) + " " + arr1[1];
+            }
+            sumUp();
+        }
+
+        /* function to save the data from table to file */
+        function saveSplider() {
+            let allTD = table.getElementsByTagName('TD');
+            if (allTD.length < 1) return;
+            let fullText = "";
+            fullText = fullText + vis1.innerHTML.toString();
+
+            let allUsers = row.getElementsByTagName('TH');
+            fullText = fullText + "|";
+            for (j = 1; j < allUsers.length; j++) {
+                fullText = fullText + allUsers[j].innerHTML.toString() + "^";
+            }
+            
+            let allTR = table.getElementsByTagName('TR');
+            fullText = fullText + "|";
+            for (k = 2; k < allUsers.length; k++) {
+                fullText = fullText + allTR[k].firstElementChild.innerHTML.toString() + "^";
+            }
+
+            fullText = fullText + "|";
+            for (i = 0; i < allTD.length; i++) {
+                fullText = fullText + allTD[i].innerHTML.toString() + "^";
+            }
+            
+            /* function to download the file */
+            download(fullText, "splider.txt", "text/plain");
+        }
+
+
+        function download(data, filename, type) {
+            var file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+             var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);  
+            }, 0); 
+            }
+        }
+
+        /* events */
+        setMainCurrency.addEventListener("click", setMain);
+        addParticipant.addEventListener('click', addUser);
+        addExpense.addEventListener('click', addNewExpense);
+        table.addEventListener('click', removeLine);
+        setNewMainCurrency.addEventListener('click', changeCurrency);
+        saveButton.addEventListener('click', saveSplider);
+
+        /* code to load file */
+        let fileText = "";
+        document.getElementById('inputfile').addEventListener('change', 
+        
+        function() {
+		    var fr=new FileReader();
+	        fr.onload=function(){
+		        fileText = fr.result;
+                loadFile();
+		    }
+		    fr.readAsText(this.files[0]);
+        })
+
+        function loadFile() {
+            let splitForKinds = fileText.split("|");
+        
+
+            /* set main currency */
+            mainCurrency = splitForKinds[0];
+            document.getElementById('nameOfCurrency').value = mainCurrency;
+            fieldOfMainCurrency.style.display = "none";
+            fieldOfChangeMainCurrency.style.display = "block";
+            vis1.innerHTML = mainCurrency;
+
+            /*add users*/
+            splitForKinds[1] = splitForKinds[1].slice(0, -1);
+            let Users = splitForKinds[1].split("^");
+            for (let x = 0; x < Users.length; x++) {
+                let select = document.getElementById("whoPay");
+                let newOption = document.createElement("option");
+                newOption.text = Users[x];
+                select.add(newOption);
+            
+                let newCheckbox = document.createElement('input');
+                newCheckbox.type = "checkbox";
+                newCheckbox.name = "users";
+                newCheckbox.value = Users[x];
+                let label = document.createElement('label');
+                label.appendChild(newCheckbox);
+                checkboxes.appendChild(label);
+                let str = Users[x] + '<br>'
+                label.insertAdjacentHTML('beforeend', str);
+
+                let thName = document.createElement('TH');
+                thName.innerHTML = Users[x];
+            
+                row.append(thName);
+            
+                participant.value = "";
+                let ths = document.getElementsByTagName('TH')
+            
+                table.style.visibility = "visible";
+            }
+
+            /*add expenses*/
+            splitForKinds[2] = splitForKinds[2].slice(0, -1);
+            let Expenses = splitForKinds[2].split("^");
+            for (let s = 0; s < Expenses.length; s++) {
+                let newTr = document.createElement('TR');
+                let newTh = document.createElement('TH');
+                let str1 = Expenses[s];
+                newTh.insertAdjacentHTML('beforeend', str1);
+                newTr.append(newTh);
+                table.append(newTr);  
+            }
+
+            /*add positions*/
+            splitForKinds[3] = splitForKinds[3].slice(0, -1);
+            let Positions = splitForKinds[3].split("^");
+            let AllTR = table.getElementsByTagName("TR");
+            let h = 0;
+            for (let e = 0; e <= Expenses.length; e++) {
+                for (let f = 0; f < Users.length; f++) {
+                    let newTD = document.createElement('TD');
+                    newTD.innerHTML = Positions[h];
+                    AllTR[e + 1].append(newTD);
+                    h++;
+                }
+            }
+
+    }
+    </script>
+  </body>
+</html>
